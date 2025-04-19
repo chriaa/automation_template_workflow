@@ -33,8 +33,8 @@ jobs:
 
     - name: Set up tmate session
       uses: mxschmitt/action-tmate@v3
-    - name: Cleanup Docker container
-      if: always()
-      run: |
-        docker stop data-automation-container
-        docker rm data-automation-containers
+    #- name: Cleanup Docker container
+    #  if: always()
+    #  run: |
+    #    docker stop data-automation-container
+    #    docker rm data-automation-containers

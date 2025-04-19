@@ -1,0 +1,38 @@
+name: Run Dockerized App
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  run-docker-app:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build Docker image
+      run: |
+        docker build -t my-app-image .
+
+    - name: Run Docker container and stream logs
+      run: |
+        # Run container in detached mode
+        docker run -d --name my-app-container my-app-image
+
+        echo "Container started. Tailing logs..."
+        # Tail logs to get them printed in GitHub Actions
+        docker logs -f my-app-container
+
+    - name: Cleanup Docker container
+      if: always()
+      run: |
+        docker stop my-app-container
+        docker rm my-app-container

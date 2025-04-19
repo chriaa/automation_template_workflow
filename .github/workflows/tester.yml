@@ -20,19 +20,21 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t my-app-image .
+        docker build -t data-automation-image .
 
     - name: Run Docker container and stream logs
       run: |
         # Run container in detached mode
-        docker run -d --name my-app-container my-app-image
+        docker run -d --name data-automation-container data-automation-image
 
         echo "Container started. Tailing logs..."
         # Tail logs to get them printed in GitHub Actions
-        docker logs -f my-app-container
+        docker logs -f data-automation-container
 
+    - name: Set up tmate session
+      uses: mxschmitt/action-tmate@v3
     - name: Cleanup Docker container
       if: always()
       run: |
-        docker stop my-app-container
-        docker rm my-app-container
+        docker stop data-automation-container
+        docker rm data-automation-containers
